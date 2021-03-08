@@ -1,10 +1,12 @@
-package io.orangebeard.listener;
+package io.orangebeard.listener.test;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.StatusCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
-import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -14,10 +16,6 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 
 //https://github.com/centic9/jgit-cookbook
 public class GitListener {
@@ -33,16 +31,6 @@ public class GitListener {
         Git git = new Git(repository);
         StatusCommand status = git.status();
 
-//        Set<String> result = status.call().getAdded();
-//
-//        System.out.println(repository.getFullBranch());
-//        git.getRepository()
-        //
-//        git.diff();
-//
-//        System.out.println(result);
-
-
         // the diff works on TreeIterators, we prepare two for the two branches
        // ObjectId oldTree = git.getRepository().resolve( "HEAD^{tree}" ); // equals newCommit.getTree()
         AbstractTreeIterator oldTreeParser = prepareTreeParser(repository, repository.getFullBranch());
@@ -51,7 +39,7 @@ public class GitListener {
 // then the procelain diff-command returns a list of diff entries
         List<DiffEntry> diff = new Git(repository).diff().setOldTree(oldTreeParser).setNewTree(newTreeParser).call();
         for(DiffEntry entry : diff) {
-            System.out.println("Entry: " + entry);
+            System.out.println("Entry: " + entry.getNewPath());
         }
 
         for(String uncommitted: status.call().getUncommittedChanges()){
