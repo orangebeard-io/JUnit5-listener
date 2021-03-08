@@ -57,7 +57,6 @@ public class GitListener {
     }
 
     private AbstractTreeIterator prepareTreeParser(Repository repository, String ref) throws IOException {
-        // from the commit we can build the tree which allows us to construct the TreeParser
         Ref head = repository.exactRef(ref);
         try (RevWalk walk = new RevWalk(repository)) {
             RevCommit commit = walk.parseCommit(head.getObjectId());
@@ -75,7 +74,6 @@ public class GitListener {
     }
 
     public static void main(String[] args) throws IOException, GitAPIException {
-
         GitListener gitListener = new GitListener("/home/maarten-jan/code/github-orangebeard/junit5-listener/.git");
         gitListener.printDiffsBetweenCurrentBranchAndMaster();
         gitListener.printLocalDiffs();
